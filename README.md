@@ -13,6 +13,10 @@
 ## Project Overview
 This project is designed to provision an Amazon Elastic Kubernetes Service (EKS) cluster using Terraform, deploy Kubernetes applications using Helm charts, and ensure security and compliance by performing automated auditing and remediation of configurations. Below are the key components and technologies used in this project:
 
+## Project Architecture
+
+![Screenshot from 2023-09-22 23-23-24](https://github.com/abdulmalik-devs/terraform-k8-helm-python/assets/62616273/ce754258-d609-4fbd-bc4f-656fb2c9848e)
+
 - **Infrastructure Provisioning**: Terraform is used to provision an EKS cluster with two worker nodes.
 
 - **Application Deployment**: Helm charts are used to manage the deployment of various Kubernetes resources such as Service Accounts, Namespaces, Network Policies, PodSecurityPolicies, and applications like the ELK stack. This ensures consistent, version-controlled application deployments.
