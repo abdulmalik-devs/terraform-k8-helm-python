@@ -12,7 +12,7 @@ terraform {
 
   backend "s3" {
     bucket = "terra-k8"
-    key    = "terra"
+    key    = "tf-statefile/terraform.tfstate"
     region = "us-west-2"
   }
 }
