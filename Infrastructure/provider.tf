@@ -14,5 +14,5 @@ terraform {
     bucket = "terra-k8"
     key    = "tf-statefile/terraform.tfstate"
     region = "us-west-2"
-  }
-} */
+  } */
+}
