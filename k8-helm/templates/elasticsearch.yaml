@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: elasticsearch
+  namespace: dev-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dev-app
+  template:
+    metadata:
+      labels:
+        app: dev-app
+    spec:
+      containers:
+        - name: elasticsearch
+          image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
+          ports:
+            - containerPort: 9200
+              name: http
+            - containerPort: 9300
+              name: transport
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch
+spec:
+  type: LoadBalancer
+  selector:
+    app: dev-app
+  ports:
+    - protocol: TCP
+      port: 9200
+      targetPort: 9200
+      name: http
+    - protocol: TCP
+      port: 9300
+      targetPort: 9300
+      name: transport

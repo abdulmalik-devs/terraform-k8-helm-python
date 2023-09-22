@@ -1,0 +1,32 @@
+# Create a Role Binding to bind the role and cluster pod security to a specific Service Account in a Namespace
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: dev-role-binding-pod-reader
+  namespace: dev-namespace 
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: dev-pod-reader
+subjects:
+- kind: ServiceAccount
+  name: dev-service-acct
+  namespace: dev-namespace
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: dev-role-binding-pod-security
+  namespace: dev-namespace 
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-pod-security-policy
+subjects:
+- kind: ServiceAccount
+  name: dev-service-acct
+  namespace: dev-namespace
+
+

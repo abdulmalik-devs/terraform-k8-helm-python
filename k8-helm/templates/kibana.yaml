@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kibana
+  namespace: dev-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dev-app
+  template:
+    metadata:
+      labels:
+        app: dev-app
+    spec:
+      containers:
+        - name: kibana
+          image: docker.elastic.co/kibana/kibana:7.15.0
+          ports:
+            - containerPort: 5601
+              name: http
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: kibana
+  namespace: dev-namespace
+spec:
+  type: LoadBalancer
+  selector:
+    app: dev-app
+  ports:
+    - protocol: TCP
+      port: 5601
+      targetPort: 5601
+      name: http
