@@ -10,9 +10,9 @@ terraform {
     }
   }
 
-  backend "s3" {
+  /* backend "s3" {
     bucket = "terra-k8"
     key    = "tf-statefile/terraform.tfstate"
     region = "us-west-2"
   }
-}
+} */
