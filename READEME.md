@@ -29,37 +29,39 @@ Terraform is used to define and provision the AWS resources for the EKS cluster 
 3. Run `terraform apply` to create the infrastructure.
 4. After provisioning, run `terraform output` to get the cluster configuration details.
 
-## Install and Conigure Kubectl
-'''
+## Install and Conigure Kubect
+
+```shell
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
 echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
 sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 kubectl version --client
-'''
+``` 
+
 
 ## Establish connection to EKS Cluster
 
-'''
+```shell
 aws eks --region <your-region> update-kubeconfig --name <cluste-name>
 kubectl config get-contexts
 kubectl config use-context <context-name>
 kubectl config current-context
 kubectl cluster-info
-'''
+``` 
 
 ## Application Deployment
 Helm charts are used for Kubernetes application deployments. The Helm charts for your applications, including the ELK stack, are stored in a directory structure. Follow these steps to deploy applications:
 
 ## Install & Configure Helm Chart
 
-'''
+```shell
 curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
 sudo apt-get install apt-transport-https --yes
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
 sudo apt-get update
 sudo apt-get install helm -y
-'''
+``` 
 
 1. Navigate to the `helm-charts` directory.
 2. Deploy a Helm chart using the `helm install` command, e.g., `helm install my-elk-stack ./elk-stack`. Customize chart values as needed.
@@ -70,14 +72,15 @@ Python unit tests are available for auditing and remediation scripts. You can ru
 1. Navigate to the `python_script` directory.
 2. Setup Python Environment using the below commands
 
-'''
+```shell
 sudo apt update
 sudo apt install python3-venv
 mkdir ~/myenv
 python3 -m venv ~/myenv
 source ~/myenv/bin/activate
 pip install kubernetes requests
-'''
+``` 
+
 
 3. Run the unit test, e.g., `python3 -m unittest <test_script.py>`.
 4. Run the audit script, e.g., `python3 -m unittest <audit_script.py>`.
