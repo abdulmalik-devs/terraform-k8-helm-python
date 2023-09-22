@@ -20,8 +20,12 @@ pipeline {
 
         stage('Provision EKS Cluster') {
             steps {
-                sh 'terraform init'
-                sh 'terraform apply -auto-approve'
+                sh '''
+                    cd ./Infrastructure
+                    terraform init
+                    terraform plan
+                    terraform apply --auto-approve
+                '''
             }
         }
 
