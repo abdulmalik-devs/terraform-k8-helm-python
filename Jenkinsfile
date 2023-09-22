@@ -1,11 +1,9 @@
 pipeline {
     agent any
     
-    // environment {
-    //     EKS_CLUSTER_NAME = "your-cluster-name"
-    //     AWS_ACCESS_KEY_ID = credentials('aws-access-key-id')
-    //     AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
-    // }
+    environment {
+        EKS_CLUSTER_NAME = "dev_cluster"
+    }
     
     stages {
         stage('Clean Workspace') {
@@ -19,65 +17,47 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/abdulmalik-devs/terraform-k8-helm-python.git'
             }
         }
-        
-        // stage('Install Dependencies') {
-        //     steps {
-        //         sh 'pip install -r requirements.txt'
-        //     }
-        // }
-        
-        // stage('Provision EKS Cluster') {
-        //     steps {
-        //         sh 'terraform init'
-        //         sh 'terraform apply -auto-approve'
-        //     }
-        // }
-        
+
+        stage('Provision EKS Cluster') {
+            steps {
+                sh 'terraform init'
+                sh 'terraform apply -auto-approve'
+            }
+        }
+
         // stage('Configure kubectl') {
         //     steps {
         //         sh 'aws eks update-kubeconfig --region us-west-2 --name $EKS_CLUSTER_NAME'
         //     }
         // }
-        
-        // stage('Configure Helm Chart') {
-        //     steps {
-        //         sh 'helm repo add stable https://charts.helm.sh/stable'
-        //         sh 'helm repo update'
-        //         sh 'helm upgrade --install your-chart-name stable/chart-name'
-        //     }
-        // }
-        
+
+
         // stage('Deploy Helm Chart') {
         //     steps {
-        //         sh 'helm upgrade --install your-chart-name stable/chart-name'
+        //         sh 'helm upgrade --install k8-helm ./python_script/k8-helm'
         //     }
         // }
-        
-        // stage('Run Python Unit Test') {
+
+        // stage('Setup Python Environment') {
         //     steps {
-        //         sh 'python -m unittest discover -s tests/unit -p "test_*.py"'
+        //         sh '''
+        //             sudo apt update
+        //             sudo apt install python3-venv -y
+        //             mkdir ~/myenv
+        //             python3 -m venv ~/myenv
+        //             source ~/myenv/bin/activate
+        //         '''
         //     }
         // }
-        
-        // stage('Run Python Audit Test') {
+
+        // stage('Install Python Dependencies') {
         //     steps {
-        //         sh 'python -m unittest discover -s tests/audit -p "test_*.py"'
+
+        //         sh 'pip install kubernetes requests'
+
         //     }
         // }
-        
-        // stage('Run Python Remediation Test') {
-        //     steps {
-        //         sh 'python -m unittest discover -s tests/remediation -p "test_*.py"'
-        //     }
-        // }
-        
-        // stage('Code Coverage') {
-        //     steps {
-        //         sh 'coverage run -m unittest discover -s tests -p "test_*.py"'
-        //         sh 'coverage report -m'
-        //     }
-        // }
-        
+
         // stage('Static Code Analysis') {
         //     steps {
         //         sh 'pylint tests/unit/*.py'
@@ -85,14 +65,36 @@ pipeline {
         //         sh 'pylint tests/remediation/*.py'
         //     }
         // }
-        
-        // stage('Artifact Management') {
+
+
+        // stage('Run Python Unit Test') {
         //     steps {
-        //         sh 'aws s3 cp tests/audit/audit.log s3://your-bucket-name'
-        //         sh 'aws s3 cp tests/remediation/remediation.log s3://your-bucket-name'
+        //         sh 'python -m unittest discover -s ./python_script -p "test_script.py"'
         //     }
         // }
+
+        // stage('Run Python Audit Test') {
+        //     steps {
+        //         sh 'python -m unittest discover -s ./python_script -p "audit_script.py"'
+        //     }
+        // }
+
         
+        // stage('Run Python Remediation Test') {
+        //     steps {
+        //         sh 'python -m unittest discover -s ./python_script-p "remediation_script.py"'
+        //     }
+        // }
+
+
+        // stage('Artifact Management') {
+        //     steps {
+        //         sh 'aws s3 cp python_script/audit.log s3://your-bucket-name'
+        //         sh 'aws s3 cp python_script/remediation.log s3://your-bucket-name'
+        //     }
+        // }
+
+
         // stage('Notifications') {
         //     steps {
         //         slackSend channel: '#your-channel', message: 'Pipeline completed successfully!', tokenCredentialId: 'your-credential-id'
