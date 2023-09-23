@@ -87,18 +87,18 @@ pipeline {
         //     }
         // }
 
-        stage('Setup Python Environment') {
-            steps {
-                script {
-                    sh '''
-                        export SUDO_ASKPASS=/usr/local/bin/askpass.sh
-                        sudo -A apt install -y python3-venv
-                        python3 -m venv myenv
-                        source myenv/bin/activate
-                    '''
-                }
-            }
-        }
+        // stage('Setup Python Environment') {
+        //     steps {
+        //         script {
+        //             sh '''
+        //                 export SUDO_ASKPASS=/usr/local/bin/askpass.sh
+        //                 sudo -A apt install -y python3-venv
+        //                 python3 -m venv myenv
+        //                 source myenv/bin/activate
+        //             '''
+        //         }
+        //     }
+        // }
 
     //  stage('Setup Python Environment') {
     //      steps {
@@ -126,7 +126,7 @@ pipeline {
 
         stage('Install Python Dependencies') {
             steps {
-
+                
                 sh 'pip install kubernetes requests'
 
             }
