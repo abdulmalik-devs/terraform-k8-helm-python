@@ -55,11 +55,11 @@ pipeline {
         //     }
         // }
 
-        // stage('Configure kubectl') {
-        //     steps {
-        //         sh 'aws eks update-kubeconfig --region us-west-2 --name $EKS_CLUSTER_NAME'
-        //     }
-        // }
+        stage('Configure kubectl') {
+            steps {
+                sh 'aws eks update-kubeconfig --region us-west-2 --name dev_cluster'
+            }
+        }
 
 
         // stage('Deploy Helm Chart') {
