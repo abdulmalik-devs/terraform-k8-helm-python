@@ -3,6 +3,7 @@ pipeline {
     
     environment {
         EKS_CLUSTER_NAME = "dev_cluster"
+        AWS_DEFAULT_REGION = 'us-west-2'
     }
     
     stages {
@@ -20,14 +21,16 @@ pipeline {
 
         stage('Provision EKS Cluster') {
             steps {
-                sh '''
-                    cd ./Infrastructure
-                    terraform init
-                    terraform plan
-                    terraform apply --auto-approve
-                '''
+                withAWS(credentials: 'AWS_Credentials', region: AWS_DEFAULT_REGION) {
+                    sh '''
+                        cd ./Infrastructure
+                        terraform init
+                        terraform apply -auto-approve
+                    '''
+                }
             }
         }
+  
 
         // stage('Configure kubectl') {
         //     steps {
