@@ -61,6 +61,21 @@ pipeline {
             }
         }
 
+        stage('Establish Connection With EKS') {
+            steps {
+                script {
+                    def eksContext = sh(returnStdout: true, script: 'kubectl config get-contexts --output name | grep dev_cluster').trim()
+                    sh '''
+                        aws eks --region us-west-2 update-kubeconfig --name dev_cluster
+                        kubectl config get-contexts
+                        kubectl config use-context ${eksContext}
+                        kubectl config current-context
+                        kubectl cluster-info
+                    '''
+                }
+            }
+        }
+
 
         // stage('Deploy Helm Chart') {
         //     steps {
