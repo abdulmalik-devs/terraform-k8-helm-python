@@ -43,6 +43,14 @@ pipeline {
         //     }
         // }
 
+        stage('Terraform Destroy') {
+            steps {
+                sh '''
+                    cd ./Infrastructure
+                    terraform destroy --auto-approve'''
+            }
+        }
+
         // stage('Provision EKS Cluster') {
         //     steps {
         //         withAWS(credentials: 'AWS_Credentials', region: AWS_DEFAULT_REGION) {
@@ -86,24 +94,24 @@ pipeline {
         //             helm upgrade --install k8-helm k8-helm'''
         //     }
         // }
-        stage('Setup Python Environment') {
-            steps {
-                script {
-                    // Define the Python version and environment name
-                    def pythonVersion = '3.8.12'
-                    def venvName = 'myenv'
-                    // Use the withPythonEnv step to manage the Python environment
-                    withPythonEnv([pyenvRoot: tool(name: 'Pyenv', type: 'hudson.plugins.pyenv.PyenvInstallation')]) {
-                        // Activate the virtual environment and set the Python version
-                        sh "pyenv global ${pythonVersion}"
-                        sh "python --version"
-                        sh "python -m venv ${venvName}"
-                        sh "source ${venvName}/bin/activate"
-                        sh "pip install kubernetes requests"
-                    }
-                }
-            }
-        }
+        // stage('Setup Python Environment') {
+        //     steps {
+        //         script {
+        //             // Define the Python version and environment name
+        //             def pythonVersion = '3.8.12'
+        //             def venvName = 'myenv'
+        //             // Use the withPythonEnv step to manage the Python environment
+        //             withPythonEnv([pyenvRoot: tool(name: 'Pyenv', type: 'hudson.plugins.pyenv.PyenvInstallation')]) {
+        //                 // Activate the virtual environment and set the Python version
+        //                 sh "pyenv global ${pythonVersion}"
+        //                 sh "python --version"
+        //                 sh "python -m venv ${venvName}"
+        //                 sh "source ${venvName}/bin/activate"
+        //                 sh "pip install kubernetes requests"
+        //             }
+        //         }
+        //     }
+        // }
 
         // stage('Setup Python Environment') {
         //     steps {
