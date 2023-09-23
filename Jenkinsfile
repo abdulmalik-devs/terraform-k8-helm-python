@@ -81,7 +81,7 @@ pipeline {
 
         stage('Deploy Helm Chart') {
             steps {
-                sh 'helm upgrade --install ./k8-helm k8-helm'
+                sh 'helm upgrade --install k8-helm k8-helm'
             }
         }
 
