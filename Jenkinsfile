@@ -27,73 +27,74 @@ pipeline {
             }
         }
 
-        // stage('Terraform Plan') {
-        //     steps {
-        //         sh '''
-        //             cd ./Infrastructure
-        //             terraform plan'''
-        //     }
-        // }
-
-        // stage('Terraform Apply') {
-        //     steps {
-        //         sh '''
-        //             cd ./Infrastructure
-        //             terraform apply --auto-approve'''
-        //     }
-        // }
-
-        stage('Terraform Destroy') {
+        stage('Terraform Plan') {
             steps {
                 sh '''
                     cd ./Infrastructure
-                    terraform destroy --auto-approve'''
+                    terraform plan'''
             }
         }
 
-        // stage('Provision EKS Cluster') {
-        //     steps {
-        //         withAWS(credentials: 'AWS_Credentials', region: AWS_DEFAULT_REGION) {
-        //             sh '''
-        //                 cd ./Infrastructure
-        //                 terraform init
-        //                 terraform apply -auto-approve
-        //             '''
-        //         }
-        //     }
-        // }
+        stage('Terraform Apply') {
+            steps {
+                sh '''
+                    cd ./Infrastructure
+                    terraform apply --auto-approve'''
+            }
+        }
 
-        // stage('Configure kubectl') {
-        //     steps {
-        //         sh 'aws eks update-kubeconfig --region us-west-2 --name dev_cluster'
-        //     }
-        // }
-
-        // stage('Establish Connection With EKS') {
-        //     steps {
-        //         script {
-        //             def eksContext = sh(returnStdout: true, script: 'kubectl config get-contexts --output name | grep dev_cluster').trim()
-        //             sh """
-        //                 aws eks --region us-west-2 update-kubeconfig --name dev_cluster
-        //                 kubectl config get-contexts
-        //                 kubectl config use-context ${eksContext}
-        //                 kubectl config current-context
-        //                 kubectl cluster-info
-        //                 kubectl get nodes -n dev-namespace
-        //                 kubectl get pods -n dev-namespace
-        //                 kubectl get svc -n dev-namespace
-        //             """
-        //         }
-        //     }
-        // }
-
-        // stage('Deploy Helm Chart') {
+        // stage('Terraform Destroy') {
         //     steps {
         //         sh '''
-        //             helm ls -a
-        //             helm upgrade --install k8-helm k8-helm'''
+        //             cd ./Infrastructure
+        //             terraform destroy --auto-approve'''
         //     }
         // }
+
+        stage('Provision EKS Cluster') {
+            steps {
+                withAWS(credentials: 'AWS_Credentials', region: AWS_DEFAULT_REGION) {
+                    sh '''
+                        cd ./Infrastructure
+                        terraform init
+                        terraform apply -auto-approve
+                    '''
+                }
+            }
+        }
+
+        stage('Configure kubectl') {
+            steps {
+                sh 'aws eks update-kubeconfig --region us-west-2 --name dev_cluster'
+            }
+        }
+
+        stage('Establish Connection With EKS') {
+            steps {
+                script {
+                    def eksContext = sh(returnStdout: true, script: 'kubectl config get-contexts --output name | grep dev_cluster').trim()
+                    sh """
+                        aws eks --region us-west-2 update-kubeconfig --name dev_cluster
+                        kubectl config get-contexts
+                        kubectl config use-context ${eksContext}
+                        kubectl config current-context
+                        kubectl cluster-info
+                        kubectl get nodes -n dev-namespace
+                        kubectl get pods -n dev-namespace
+                        kubectl get svc -n dev-namespace
+                    """
+                }
+            }
+        }
+
+        stage('Deploy Helm Chart') {
+            steps {
+                sh '''
+                    helm ls -a
+                    helm upgrade --install k8-helm k8-helm'''
+            }
+        }
+        
         // stage('Setup Python Environment') {
         //     steps {
         //         script {
@@ -153,15 +154,6 @@ pipeline {
         //     }
         // }
 
-        // stage('Static Code Analysis') {
-        //     steps {
-        //         sh 'pylint tests/unit/*.py'
-        //         sh 'pylint tests/audit/*.py'
-        //         sh 'pylint tests/remediation/*.py'
-        //     }
-        // }
-
-
         // stage('Run Python Unit Test') {
         //     steps {
         //         sh 'python -m unittest discover -s ./python_script -p "test_script.py"'
@@ -189,11 +181,5 @@ pipeline {
         //     }
         // }
 
-
-        // stage('Notifications') {
-        //     steps {
-        //         slackSend channel: '#your-channel', message: 'Pipeline completed successfully!', tokenCredentialId: 'your-credential-id'
-        //     }
-        // }
     }
 }
