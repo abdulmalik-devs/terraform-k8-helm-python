@@ -51,49 +51,37 @@ pipeline {
         //     }
         // }
 
-        stage('Provision EKS Cluster') {
+        stage('Configure kubectl') {
             steps {
-                withAWS(credentials: 'AWS_Credentials', region: AWS_DEFAULT_REGION) {
-                    sh '''
-                        cd ./Infrastructure
-                        terraform init
-                        terraform apply -auto-approve
-                    '''
+                sh 'aws eks update-kubeconfig --region us-west-2 --name dev_cluster'
+            }
+        }
+
+        stage('Establish Connection With EKS') {
+            steps {
+                script {
+                    def eksContext = sh(returnStdout: true, script: 'kubectl config get-contexts --output name | grep dev_cluster').trim()
+                    sh """
+                        aws eks --region us-west-2 update-kubeconfig --name dev_cluster
+                        kubectl config get-contexts
+                        kubectl config use-context ${eksContext}
+                        kubectl config current-context
+                        kubectl cluster-info
+                        kubectl get nodes -n dev-namespace
+                        kubectl get pods -n dev-namespace
+                        kubectl get svc -n dev-namespace
+                    """
                 }
             }
         }
 
-        // stage('Configure kubectl') {
-        //     steps {
-        //         sh 'aws eks update-kubeconfig --region us-west-2 --name dev_cluster'
-        //     }
-        // }
-
-        // stage('Establish Connection With EKS') {
-        //     steps {
-        //         script {
-        //             def eksContext = sh(returnStdout: true, script: 'kubectl config get-contexts --output name | grep dev_cluster').trim()
-        //             sh """
-        //                 aws eks --region us-west-2 update-kubeconfig --name dev_cluster
-        //                 kubectl config get-contexts
-        //                 kubectl config use-context ${eksContext}
-        //                 kubectl config current-context
-        //                 kubectl cluster-info
-        //                 kubectl get nodes -n dev-namespace
-        //                 kubectl get pods -n dev-namespace
-        //                 kubectl get svc -n dev-namespace
-        //             """
-        //         }
-        //     }
-        // }
-
-        // stage('Deploy Helm Chart') {
-        //     steps {
-        //         sh '''
-        //             helm ls -a
-        //             helm upgrade --install k8-helm k8-helm'''
-        //     }
-        // }
+        stage('Deploy Helm Chart') {
+            steps {
+                sh '''
+                    helm ls -a
+                    helm upgrade --install k8-helm k8-helm'''
+            }
+        }
 
         // stage('Setup Python Environment') {
         //     steps {
