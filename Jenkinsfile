@@ -19,29 +19,29 @@ pipeline {
             }
         }
 
-        stage('Terraform Init') {
-            steps {
-                sh '''
-                    cd ./Infrastructure
-                    terraform init -reconfigure'''
-            }
-        }
+        // stage('Terraform Init') {
+        //     steps {
+        //         sh '''
+        //             cd ./Infrastructure
+        //             terraform init -reconfigure'''
+        //     }
+        // }
 
-        stage('Terraform Plan') {
-            steps {
-                sh '''
-                    cd ./Infrastructure
-                    terraform plan'''
-            }
-        }
+        // stage('Terraform Plan') {
+        //     steps {
+        //         sh '''
+        //             cd ./Infrastructure
+        //             terraform plan'''
+        //     }
+        // }
 
-        stage('Terraform Apply') {
-            steps {
-                sh '''
-                    cd ./Infrastructure
-                    terraform apply --auto-approve'''
-            }
-        }
+        // stage('Terraform Apply') {
+        //     steps {
+        //         sh '''
+        //             cd ./Infrastructure
+        //             terraform apply --auto-approve'''
+        //     }
+        // }
 
         // stage('Provision EKS Cluster') {
         //     steps {
