@@ -90,7 +90,9 @@ pipeline {
      stage('Setup Python Environment') {
          steps {
              sh '''
-                sudo -u ubuntu sudo apt install -y python3-venv
+                sudo -u ubuntu
+                export SUDO_ASKPASS=/usr/local/bin/askpass.sh
+                sudo -A apt install -y python3-venv
                 python3 -m venv myenv
                 source myenv/bin/activate
              '''
