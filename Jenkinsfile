@@ -90,7 +90,6 @@ pipeline {
         stage('Setup Python Environment') {
             steps {
                 sh '''
-                    sudo apt update
                     sudo apt install python3-venv -y
                     mkdir ~/myenv
                     python3 -m venv ~/myenv
