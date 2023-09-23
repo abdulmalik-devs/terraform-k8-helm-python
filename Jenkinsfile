@@ -90,6 +90,8 @@ pipeline {
      stage('Setup Python Environment') {
          steps {
              sh '''
+             apt install -y python3-venv
+             python3 -m venv myenv
              source myenv/bin/activate
              '''
          }
@@ -98,7 +100,7 @@ pipeline {
         // stage('Setup Python Environment') {
         //     steps {
         //         sh '''
-                    // sudo apt install -y python3-venv
+                    // apt install -y python3-venv
                         // python3 -m venv myenv
         //             apt install python3-venv -y
         //             mkdir ~/myenv
