@@ -87,16 +87,26 @@ pipeline {
         //     }
         // }
 
-        stage('Setup Python Environment') {
-            steps {
-                sh '''
-                    apt install python3-venv -y
-                    mkdir ~/myenv
-                    python3 -m venv ~/myenv
-                    source ~/myenv/bin/activate
-                '''
-            }
-        }
+     stage('Setup Python Environment') {
+         steps {
+             sh '''
+                 python3 -m venv myenv
+                 source myenv/bin/activate
+                 pip install -r requirements.txt
+             '''
+         }
+     }
+
+        // stage('Setup Python Environment') {
+        //     steps {
+        //         sh '''
+        //             apt install python3-venv -y
+        //             mkdir ~/myenv
+        //             python3 -m venv ~/myenv
+        //             source ~/myenv/bin/activate
+        //         '''
+        //     }
+        // }
 
         // stage('Install Python Dependencies') {
         //     steps {
