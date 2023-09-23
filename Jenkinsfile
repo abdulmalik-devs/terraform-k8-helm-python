@@ -60,18 +60,6 @@ pipeline {
         //         sh 'aws eks update-kubeconfig --region us-west-2 --name dev_cluster'
         //     }
         // }
-        stage('Setup Python Environment') {
-            steps {
-                script {
-                    sh '''
-                        sudo apt-get update
-                        sudo apt-get install -y python3-venv
-                        python3 -m venv myenv
-                        source myenv/bin/activate
-                    '''
-                }
-            }
-        }
 
         // stage('Establish Connection With EKS') {
         //     steps {
@@ -98,6 +86,19 @@ pipeline {
         //             helm upgrade --install k8-helm k8-helm'''
         //     }
         // }
+
+        stage('Setup Python Environment') {
+            steps {
+                script {
+                    sh '''
+                        export SUDO_ASKPASS=/usr/local/bin/askpass.sh
+                        sudo -A apt install -y python3-venv
+                        python3 -m venv myenv
+                        source myenv/bin/activate
+                    '''
+                }
+            }
+        }
 
     //  stage('Setup Python Environment') {
     //      steps {
