@@ -60,6 +60,18 @@ pipeline {
         //         sh 'aws eks update-kubeconfig --region us-west-2 --name dev_cluster'
         //     }
         // }
+        stage('Setup Python Environment') {
+            steps {
+                script {
+                    sh '''
+                        sudo apt-get update
+                        sudo apt-get install -y python3-venv
+                        python3 -m venv myenv
+                        source myenv/bin/activate
+                    '''
+                }
+            }
+        }
 
         // stage('Establish Connection With EKS') {
         //     steps {
@@ -87,14 +99,14 @@ pipeline {
         //     }
         // }
 
-     stage('Setup Python Environment') {
-         steps {
-             sh '''
-                su - ubuntu -c "sudo apt update && sudo apt install -y python3-venv"
-                su - ubuntu -c "python3 -m venv myenv && source myenv/bin/activate"
-             '''
-         }
-     }
+    //  stage('Setup Python Environment') {
+    //      steps {
+    //          sh '''
+    //             su - ubuntu -c "sudo apt update && sudo apt install -y python3-venv"
+    //             su - ubuntu -c "python3 -m venv myenv && source myenv/bin/activate"
+    //          '''
+    //      }
+    //  }
 
         // stage('Setup Python Environment') {
         //     steps {
@@ -111,13 +123,13 @@ pipeline {
         //     }
         // }
 
-        // stage('Install Python Dependencies') {
-        //     steps {
+        stage('Install Python Dependencies') {
+            steps {
 
-        //         sh 'pip install kubernetes requests'
+                sh 'pip install kubernetes requests'
 
-        //     }
-        // }
+            }
+        }
 
         // stage('Static Code Analysis') {
         //     steps {
