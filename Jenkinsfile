@@ -19,13 +19,13 @@ pipeline {
             }
         }
 
-        // stage('Terraform Init') {
-        //     steps {
-        //         sh '''
-        //             cd ./Infrastructure
-        //             terraform init -reconfigure'''
-        //     }
-        // }
+        stage('Terraform Init') {
+            steps {
+                sh '''
+                    cd ./Infrastructure
+                    terraform init -reconfigure'''
+            }
+        }
 
         // stage('Terraform Plan') {
         //     steps {
