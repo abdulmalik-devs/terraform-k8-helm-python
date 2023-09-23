@@ -25,6 +25,12 @@ pipeline {
             }
         }
 
+        stage('Terraform Plan') {
+            steps {
+                sh ('terraform plan')
+            }
+        }
+
         // stage('Provision EKS Cluster') {
         //     steps {
         //         withAWS(credentials: 'AWS_Credentials', region: AWS_DEFAULT_REGION) {
