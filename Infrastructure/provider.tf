@@ -10,6 +10,9 @@ terraform {
     }
   }
 
+}
+
+terraform {
   backend "s3" {
     bucket = "terra-k8"
     key    = "tf-statefile/terraform.tfstate"
