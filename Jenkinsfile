@@ -19,16 +19,11 @@ pipeline {
             }
         }
 
-        // stage('Provision EKS Cluster') {
-        //     steps {
-        //         sh '''
-        //             cd ./Infrastructure
-        //             ('terraform init')
-        //             ('terraform plan')
-        //             ('terraform apply --auto-approve')
-        //         '''
-        //     }
-        // }
+        stage('Terraform Init') {
+            steps {
+                sh ('terraform init -reconfigure')
+            }
+        }
 
         // stage('Provision EKS Cluster') {
         //     steps {
