@@ -21,13 +21,17 @@ pipeline {
 
         stage('Terraform Init') {
             steps {
-                sh ('terraform init -reconfigure')
+                sh '''
+                    cd ./Infrastructure
+                    terraform init -reconfigure'''
             }
         }
 
         stage('Terraform Plan') {
             steps {
-                sh ('terraform plan')
+                sh '''
+                    cd ./Infrastructure
+                    terraform plan'''
             }
         }
 
