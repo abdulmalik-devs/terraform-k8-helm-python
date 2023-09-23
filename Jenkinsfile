@@ -35,6 +35,14 @@ pipeline {
             }
         }
 
+        stage('Terraform Apply') {
+            steps {
+                sh '''
+                    cd ./Infrastructure
+                    terraform apply --auto-approve'''
+            }
+        }
+
         // stage('Provision EKS Cluster') {
         //     steps {
         //         withAWS(credentials: 'AWS_Credentials', region: AWS_DEFAULT_REGION) {
