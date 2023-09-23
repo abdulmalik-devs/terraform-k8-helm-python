@@ -73,19 +73,17 @@ pipeline {
                         kubectl cluster-info
                         kubectl get nodes -n dev-namespace
                         kubectl get pods -n dev-namespace
-                        kubetctl get svc -n dev-namespace
+                        kubectl get svc -n dev-namespace
                     """
                 }
             }
         }
 
-
-
-        // stage('Deploy Helm Chart') {
-        //     steps {
-        //         sh 'helm upgrade --install k8-helm ./python_script/k8-helm'
-        //     }
-        // }
+        stage('Deploy Helm Chart') {
+            steps {
+                sh 'helm upgrade --install k8-helm ./python_script/k8-helm'
+            }
+        }
 
         // stage('Setup Python Environment') {
         //     steps {
