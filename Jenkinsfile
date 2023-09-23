@@ -21,16 +21,25 @@ pipeline {
 
         stage('Provision EKS Cluster') {
             steps {
-                withAWS(credentials: 'AWS_Credentials', region: AWS_DEFAULT_REGION) {
-                    sh '''
-                        cd ./Infrastructure
-                        terraform init
-                        terraform apply -auto-approve
-                    '''
-                }
+                sh '''
+                    cd ./Infrastructure
+                    terraform init
+                    terraform apply -auto-approve
+                '''
             }
         }
-  
+
+        // stage('Provision EKS Cluster') {
+        //     steps {
+        //         withAWS(credentials: 'AWS_Credentials', region: AWS_DEFAULT_REGION) {
+        //             sh '''
+        //                 cd ./Infrastructure
+        //                 terraform init
+        //                 terraform apply -auto-approve
+        //             '''
+        //         }
+        //     }
+        // }
 
         // stage('Configure kubectl') {
         //     steps {
