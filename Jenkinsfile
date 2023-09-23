@@ -60,7 +60,7 @@ pipeline {
                 sh 'aws eks update-kubeconfig --region us-west-2 --name dev_cluster'
             }
         }
-        
+
         stage('Establish Connection With EKS') {
             steps {
                 script {
@@ -71,6 +71,9 @@ pipeline {
                         kubectl config use-context ${eksContext}
                         kubectl config current-context
                         kubectl cluster-info
+                        kubectl get nodes -n dev-namespace
+                        kubectl get pods -n dev-namespace
+                        kubetctl get svc -n dev-namespace
                     """
                 }
             }
